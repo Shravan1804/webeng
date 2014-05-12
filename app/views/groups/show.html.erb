@@ -1,0 +1,33 @@
+<h1>Groups Show</h1>
+
+<ul class="list-group">
+  <li class="list-group-item"><h2><%= @group.name %></h2></li>
+  <li class="list-group-item"><h3><%= @group.hometown %></h3></li>
+  <li class="list-group-item"><h3><%= @group.date_created %></h3></li>
+</ul>
+
+
+<h3>Owner: <%= @group.owner.email %></h3>
+
+<ul class="list-group">
+  <li class="list-group-item"><h4>Owner has voted for</h4></li>
+  <% @group.owner.voted_for.each do |vote| %>
+      <li class="list-group-item"><%= vote.name %> in group: <%= vote.group.name %></li>
+  <% end %>
+</ul>
+
+<ul class="list-group">
+  <li class="list-group-item"><h4>Users</h4></li>
+  <% @group.user.each do |user| %>
+      <li class="list-group-item"><%= user.email %></li>
+  <% end %>
+</ul>
+
+<ul class="list-group">
+  <li class="list-group-item"><h4>Activities</h4></li>
+  <% @group.activity.each do |activity| %>
+      <li class="list-group-item"><strong>Name: <%= activity.name %></strong></li>
+      <li class="list-group-item">Location: <%= activity.location %></li>
+      <li class="list-group-item">Description: <%= activity.description %></li>
+  <% end %>
+</ul>
