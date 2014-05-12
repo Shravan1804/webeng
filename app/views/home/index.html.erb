@@ -1,1 +1,12 @@
 <h1>Grüetzi!</h1>
+<br/>
+<h2>Welcome to the Meetup web application.</h2>
+<br/>
+<% if !user_signed_in? %>
+	<h2>Users should be authenticated before they can access the web application.</h2>
+<% else %>
+	<h2><%= link_to 'My Meetups', groups_path %></h2>
+	<br/>
+	<h2><%= link_to 'All Meetups', groups_path %></h2>
+	<br/>
+<% end %>

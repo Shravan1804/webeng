@@ -1,8 +1,9 @@
 class Activity < ActiveRecord::Base
 
-  validates :name, presence: true, length: { in: 6..30 }
+  validates :name, presence: true, length: { in: 3..30 }
   validates :location, presence: true, length: { in: 3..20 }
   validates :start_date, presence: true
+  validates :duration, presence: true
   validates :description, presence: true, length: { in: 6..400 }
   validates :image, presence: true
 

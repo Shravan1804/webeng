@@ -1,1 +1,15 @@
-<h1>Activities Show</h1>
+<h1><%= @activity.name %> for <%= get_group_name %> members</h1>
+<% if current_user_is_group_owner %>
+  <%= link_to 'Edit', edit_activity_path(@activity) %>
+  <%= link_to 'Delete', activity_path(@activity),
+		method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
+<ul class="list-group">
+  <li class="list-group-item"><h3>Location: <%= @activity.location %></h3></li>
+  <li class="list-group-item"><h3>When: <%= @activity.start_date %></h3></li>
+  <li class="list-group-item"><h3>Duration: <%= @activity.duration %> hours</h3></li>
+  <li class="list-group-item"><h3>Description <%= @activity.description %></h3></li>
+</ul>
+(image:)<%= @activity.image %>
+<br/>
+<%= link_to 'Back', group_path(@activity.group_id) %>

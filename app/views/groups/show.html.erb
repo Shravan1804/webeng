@@ -1,13 +1,17 @@
-<h1>Groups Show</h1>
-
+<h1><%= @group.name %></h1>
+<% if current_user_is_owner %>
+  <%= link_to 'Edit', edit_group_path(@group) %>
+  <%= link_to 'Delete', group_path(@group),
+		method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>
 <ul class="list-group">
-  <li class="list-group-item"><h2><%= @group.name %></h2></li>
-  <li class="list-group-item"><h3><%= @group.hometown %></h3></li>
-  <li class="list-group-item"><h3><%= @group.date_created %></h3></li>
+  <li class="list-group-item"><h3>Owner: <%= @group.owner.email %></h3></li>
+  <li class="list-group-item"><h3>Hometown: <%= @group.hometown %></h3></li>
+  <li class="list-group-item"><h3>Created on <%= @group.created_at %></h3></li>
 </ul>
 
 
-<h3>Owner: <%= @group.owner.email %></h3>
+
 
 <ul class="list-group">
   <li class="list-group-item"><h4>Owner has voted for</h4></li>
@@ -16,18 +20,29 @@
   <% end %>
 </ul>
 
+<% if current_user_is_owner %>
+  <%= link_to 'Add an user', add_user_group_path %>
+<% end %>
 <ul class="list-group">
   <li class="list-group-item"><h4>Users</h4></li>
   <% @group.user.each do |user| %>
-      <li class="list-group-item"><%= user.email %></li>
+      <li class="list-group-item"><%= user.email %>
+	  <% if current_user_is_owner %>
+	  <%= link_to 'remove', remove_user_group_path(user_param: user),
+		method: :delete, data: { confirm: 'Are you sure?' } %>
+		<% end %></li>
   <% end %>
 </ul>
 
+<% if current_user_is_owner %>
+  <%= link_to 'Add an activity', new_activity_path(group_id: @group) %>
+<% end %>
 <ul class="list-group">
   <li class="list-group-item"><h4>Activities</h4></li>
   <% @group.activity.each do |activity| %>
-      <li class="list-group-item"><strong>Name: <%= activity.name %></strong></li>
-      <li class="list-group-item">Location: <%= activity.location %></li>
-      <li class="list-group-item">Description: <%= activity.description %></li>
+      <li class="list-group-item"><strong><%= activity.name %></strong> in <%= activity.location %> on <%= activity.start_date %> | <%= link_to 'More informations', activity_path(activity) %> | <%= link_to 'delete', activity_path(activity),
+		method: :delete, data: { confirm: 'Are you sure?' } %></li>
   <% end %>
 </ul>
+
+<%= link_to 'Back', groups_path %>

@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :groups
+  resources :groups do
+	member do
+		get 'add_user'
+		post 'store_user'
+		delete 'remove_user'
+	end
+  end
   resources :activities
   root :to => 'home#index'
 
