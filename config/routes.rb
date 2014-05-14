@@ -1,16 +1,23 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :groups do
-	member do
-		get 'add_user'
-		post 'store_user'
-		delete 'remove_user'
-	end
+    member do
+      get 'add_user'
+      post 'store_user'
+      delete 'remove_user'
+    end
+
+    resources :activities, only: :new
   end
-  resources :activities
+
+  resources :activities do
+    member do
+      post 'vote'
+      post 'definitive'
+    end
+  end
+
   root :to => 'home#index'
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

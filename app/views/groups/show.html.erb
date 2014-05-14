@@ -1,48 +1,98 @@
-<h1><%= @group.name %></h1>
-<% if current_user_is_owner %>
-  <%= link_to 'Edit', edit_group_path(@group) %>
-  <%= link_to 'Delete', group_path(@group),
-		method: :delete, data: { confirm: 'Are you sure?' } %>
-<% end %>
-<ul class="list-group">
-  <li class="list-group-item"><h3>Owner: <%= @group.owner.email %></h3></li>
-  <li class="list-group-item"><h3>Hometown: <%= @group.hometown %></h3></li>
-  <li class="list-group-item"><h3>Created on <%= @group.created_at %></h3></li>
-</ul>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <%= @group.name %>
+      <% if current_user_is_owner %>
+        <small class="pull-right">
+          <%= link_to 'Edit', edit_group_path(@group) %> |
+          <%= link_to 'Delete',
+                      group_path(@group),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %>
+        </small>
+      <% end %>
+  </div>
 
+  <ul class="list-group">
+    <li class="list-group-item">Owner: <%= @group.owner.email %></li>
+    <li class="list-group-item">Hometown: <%= @group.hometown %></li>
+    <li class="list-group-item">Created on: <%= @group.created_at.to_formatted_s(:short) %></li>
+  </ul>
+</div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Members
 
+    <% if current_user_is_owner %>
+      <small class="pull-right">
+        <%= link_to 'Add a member', add_user_group_path %>
+      </small>
+    <% end %>
+  </div>
 
-<ul class="list-group">
-  <li class="list-group-item"><h4>Owner has voted for</h4></li>
-  <% @group.owner.voted_for.each do |vote| %>
-      <li class="list-group-item"><%= vote.name %> in group: <%= vote.group.name %></li>
+  <ul class="list-group">
+    <% if @group.user.exists? %>
+      <% @group.user.each do |user| %>
+          <li class="list-group-item"><%= user.email %>
+        <% if current_user_is_owner %>
+        <%= link_to 'Remove', remove_user_group_path(user_param: user),
+        method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %></li>
+      <% end %>
+    <% else %>
+      <li class="list-group-item"><small>There are currently no members in this group.</small></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Activities
+    <small class="pull-right">
+      <% if current_user_is_owner %>
+        <%= link_to 'Add an activity', new_group_activity_path(group_id: @group) %>
+      <% end %>
+    </small>
+  </div>
+  <% if @group.activity.exists? %>
+    <table class="table">
+      <tr>
+        <th>Activity</th>
+        <th>Time</th>
+        <th>Location</th>
+        <th>Votes</th>
+        <th>Definitive</th>
+        <% if current_user_is_owner %>
+          <th>Delete</th>
+        <% end %>
+      </tr>
+      <% @group.activity.each do |activity| %>
+        <tr>
+            <td><strong><%= link_to activity.name, activity_path(activity) %></strong></td>
+            <td><%= activity.start_date.to_formatted_s(:short) %></td>
+            <td><%= activity.location %></td>
+            <td>
+              <%= activity.voters.count.to_s %>
+              <%= link_to '<i class="fa fa-fw fa-thumbs-o-up"></i>'.html_safe, vote_activity_path(activity),
+                          class: ('disabled' if activity.voters.include? current_user), method: :post %>
+            </td>
+            <td>
+              <%= activity.definitive ? 'Yes' : 'No'%>
+              <% if current_user_is_owner && ! activity.definitive%>
+                <%= link_to '<i class="fa fa-fw fa-check"></i> Mark as definitive'.html_safe, definitive_activity_path(activity), method: :post %>
+              <% end %>
+            </td>
+          <% if current_user_is_owner %>
+              <td><%= link_to '<i class="fa fa-fw fa-times"></i>'.html_safe, activity_path(activity),
+                              method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+  <div class="panel-body"><small>There are currently no activities in this group.</small></div>
   <% end %>
-</ul>
-
-<% if current_user_is_owner %>
-  <%= link_to 'Add an user', add_user_group_path %>
-<% end %>
-<ul class="list-group">
-  <li class="list-group-item"><h4>Users</h4></li>
-  <% @group.user.each do |user| %>
-      <li class="list-group-item"><%= user.email %>
-	  <% if current_user_is_owner %>
-	  <%= link_to 'remove', remove_user_group_path(user_param: user),
-		method: :delete, data: { confirm: 'Are you sure?' } %>
-		<% end %></li>
-  <% end %>
-</ul>
-
-<% if current_user_is_owner %>
-  <%= link_to 'Add an activity', new_activity_path(group_id: @group) %>
-<% end %>
-<ul class="list-group">
-  <li class="list-group-item"><h4>Activities</h4></li>
-  <% @group.activity.each do |activity| %>
-      <li class="list-group-item"><strong><%= activity.name %></strong> in <%= activity.location %> on <%= activity.start_date %> | <%= link_to 'More informations', activity_path(activity) %> | <%= link_to 'delete', activity_path(activity),
-		method: :delete, data: { confirm: 'Are you sure?' } %></li>
-  <% end %>
-</ul>
+  </table>
+</div>
 
 <%= link_to 'Back', groups_path %>

@@ -3,8 +3,8 @@ class Activity < ActiveRecord::Base
   validates :name, presence: true, length: { in: 3..30 }
   validates :location, presence: true, length: { in: 3..20 }
   validates :start_date, presence: true
-  validates :duration, presence: true
-  validates :description, presence: true, length: { in: 6..400 }
+  validates :duration, presence: true, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :description, presence: true, length: { in: 6..1000 }
   validates :image, presence: true
 
   belongs_to :group

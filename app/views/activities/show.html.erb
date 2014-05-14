@@ -1,15 +1,45 @@
-<h1><%= @activity.name %> for <%= get_group_name %> members</h1>
-<% if current_user_is_group_owner %>
-  <%= link_to 'Edit', edit_activity_path(@activity) %>
-  <%= link_to 'Delete', activity_path(@activity),
-		method: :delete, data: { confirm: 'Are you sure?' } %>
-<% end %>
-<ul class="list-group">
-  <li class="list-group-item"><h3>Location: <%= @activity.location %></h3></li>
-  <li class="list-group-item"><h3>When: <%= @activity.start_date %></h3></li>
-  <li class="list-group-item"><h3>Duration: <%= @activity.duration %> hours</h3></li>
-  <li class="list-group-item"><h3>Description <%= @activity.description %></h3></li>
-</ul>
-(image:)<%= @activity.image %>
-<br/>
-<%= link_to 'Back', group_path(@activity.group_id) %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="media">
+      <img class="pull-left media-object" src="http://placehold.it/150x150" alt="">
+      <div class="media-body">
+        <h4 class="media-heading">
+          <%= @activity.name %> for <%= get_group_name %> members
+        </h4>
+        <%= @activity.description %>
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <tr>
+      <th>Time</th>
+      <th>Duration</th>
+      <th>Location</th>
+      <th>Votes</th>
+      <th>Definitive</th>
+    </tr>
+    <tr>
+      <td><%= @activity.start_date.to_formatted_s(:short) %></td>
+      <td><%= pluralize(@activity.duration, "hour")%></td>
+      <td><%= @activity.location %></td>
+      <td><%= @activity.voters.count %></td>
+      <td>
+        <%= @activity.definitive ? 'Yes' : 'No'%>
+        <% if current_user_is_group_owner && ! @activity.definitive%>
+          <%= link_to '<i class="fa fa-fw fa-check"></i> Mark as definitive'.html_safe, definitive_activity_path(@activity), method: :post %>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+  <div class="panel-footer">
+    <%= link_to 'Back', group_path(@activity.group_id) %>
+    <% if current_user_is_group_owner %>
+      <p class="pull-right">
+        <%= link_to 'Edit', edit_activity_path(@activity) %>
+        <%= link_to 'Delete', activity_path(@activity),
+                    method: :delete, data: { confirm: 'Are you sure?' } %>
+      </p>
+    <% end %>
+  </div>
+</div>
+

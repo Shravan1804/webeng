@@ -1,5 +1,54 @@
 <h1>Create an Activity</h1>
 
-<%= render 'form' %>
+<%= form_for @activity do |f| %>
 
-<%= link_to 'Back', group_path(params[:group_id]) %>
+  <% if @activity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@activity.errors.count, "error") %> prohibited
+        this activity from being saved:</h2>
+      <ul>
+        <% @activity.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :group_id, :value => params[:group_id] %>
+
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label :location %><br>
+    <%= f.text_field :location %>
+  </p>
+
+  <p>
+    <%= f.label( :duration,"Duration in hours:") %><br>
+    <%= f.number_field :duration %>
+  </p>
+
+  <p>
+    <%= f.label :image %><br>
+    <%= f.text_field :image %>
+  </p>
+
+  <p>
+    <%= f.label :start_date %><br>
+    <%= f.datetime_select :start_date %>
+  </p>
+
+  <p>
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', group_path(Group.find(params[:group_id])) %>

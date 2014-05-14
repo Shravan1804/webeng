@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140508210743) do
+ActiveRecord::Schema.define(version: 20140512155317) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20140508210743) do
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "definitive",  default: false
   end
 
   create_table "groups", force: true do |t|
