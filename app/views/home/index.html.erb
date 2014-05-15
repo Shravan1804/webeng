@@ -5,7 +5,7 @@
 <% if !user_signed_in? %>
 	<h2>Users should be authenticated before they can access the web application.</h2>
 <% else %>
-	<h2><%= link_to 'My Meetups', groups_path %></h2>
+	<h2><%= link_to 'My Meetups', my_groups_path %></h2>
 	<br/>
 	<h2><%= link_to 'All Meetups', groups_path %></h2>
 	<br/>

@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
   helper_method :current_user_is_owner
 
   def index
+    @title = 'Meetup groups'
     @groups = Group.all
   end
 
@@ -28,6 +29,7 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(group_params)
     @group.owner_id = current_user.id
+    @group.user << current_user
     if @group.save
       redirect_to @group
     else
@@ -63,8 +65,10 @@ class GroupsController < ApplicationController
   end
   
   def remove_user
-    member=User.find(params[:user_param])
-    @group.user.destroy(member)
+    member = User.find(params[:user_param])
+    if member.id != @group.owner_id
+      @group.user.destroy(member)
+    end
     redirect_to @group
   end
   

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  get '/my_groups', to: 'users#groups', as: 'my_groups'
+
   resources :groups do
     member do
       get 'add_user'

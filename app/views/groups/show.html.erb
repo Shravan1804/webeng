@@ -34,9 +34,11 @@
     <% if @group.user.exists? %>
       <% @group.user.each do |user| %>
           <li class="list-group-item"><%= user.email %>
-        <% if current_user_is_owner %>
-        <%= link_to 'Remove', remove_user_group_path(user_param: user),
-        method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% if current_user_is_owner && user != current_user %>
+          <small class="pull-right">
+            <%= link_to 'Remove', remove_user_group_path(user_param: user),
+                        method: :delete, data: { confirm: 'Are you sure?' } %>
+          </small>
         <% end %></li>
       <% end %>
     <% else %>
@@ -95,4 +97,4 @@
   </table>
 </div>
 
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Back', :back %>
