@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  devise_for :users
 
-  get '/my_groups', to: 'users#groups', as: 'my_groups'
+  devise_for :users
+  resources :users
 
   resources :groups do
     member do
