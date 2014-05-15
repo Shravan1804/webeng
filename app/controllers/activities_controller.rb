@@ -24,6 +24,7 @@ class ActivitiesController < ApplicationController
   end
 
   def new
+    @group = Group.find(params[:group_id])
 	  @activity = Activity.new
   end
 
@@ -31,9 +32,11 @@ class ActivitiesController < ApplicationController
     @activity = Activity.new(activity_params)
 
     if @activity.save
-      redirect_to Group.find(@activity.group_id)
+      @group = Group.find(@activity.group_id)
+      redirect_to @group
     else
-      redirect_to :back
+      @group = Group.find(params[:activity][:group_id])
+      render action: 'new'
     end
   end
 

@@ -1,4 +1,4 @@
-<%= form_for @activity do |f| %>
+<%= form_for @activity, html: {'novalidate' => 'true'} do |f| %>
 
   <% if @activity.errors.any? %>
     <div id="error_explanation">
@@ -12,7 +12,7 @@
     </div>
   <% end %>
 
-  <%= f.hidden_field :group_id, :value => params[:group_id] %>
+  <%= f.hidden_field :group_id, :value => params[:group_id] ? params[:group_id] : params[:activity][:group_id]%>
 
   <p>
     <%= f.label :name %><br>
@@ -36,7 +36,7 @@
 
   <p>
     <%= f.label :start_date %><br>
-    <%= f.date_select :start_date %>
+    <%= f.datetime_select :start_date %>
   </p>
 
   <p>

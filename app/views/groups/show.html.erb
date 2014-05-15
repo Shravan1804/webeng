@@ -75,8 +75,11 @@
             <td><%= activity.location %></td>
             <td>
               <%= activity.voters.count.to_s %>
-              <%= link_to '<i class="fa fa-fw fa-thumbs-o-up"></i>'.html_safe, vote_activity_path(activity),
-                          class: ('disabled' if activity.voters.include? current_user), method: :post %>
+              <% if activity.voters.include? current_user %>
+                <i class="fa fa-fw fa-thumbs-o-up" style="color: grey;"></i>
+              <% else %>
+                <%= link_to '<i class="fa fa-fw fa-thumbs-o-up"></i>'.html_safe, vote_activity_path(activity), method: :post %>
+              <% end %>
             </td>
             <td>
               <%= activity.definitive ? 'Yes' : 'No'%>
