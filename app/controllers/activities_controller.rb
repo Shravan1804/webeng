@@ -5,6 +5,7 @@ class ActivitiesController < ApplicationController
 
   helper_method :current_user_is_group_owner
   helper_method :get_group_name
+  helper_method :has_voted
 
   before_filter :require_owner, only: [:destroy, :mark_as_definitive]
 
@@ -69,6 +70,10 @@ class ActivitiesController < ApplicationController
       activity.voters << current_user
     end
     redirect_to :back
+  end
+  
+  def has_voted
+	@activity.voters.include?(current_user)
   end
 
   def definitive
