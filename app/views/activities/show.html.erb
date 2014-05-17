@@ -1,12 +1,14 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <div class="media">
-      <img class="pull-left media-object" src="http://placehold.it/150x150" alt="">
+      <img class="pull-left media-object" src="<%= @activity.image %>" alt="">
       <div class="media-body">
         <h4 class="media-heading">
           <%= @activity.name %> for <%= get_group_name %> members
         </h4>
         <%= @activity.description %>
+		<br/>
+		<%= link_to 'Change picture', search_photo_activity_path %>
       </div>
     </div>
   </div>

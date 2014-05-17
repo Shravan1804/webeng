@@ -8,7 +8,7 @@ class ActivitiesController < ApplicationController
   helper_method :has_voted
 
   before_filter :require_owner, only: [:destroy, :mark_as_definitive]
-
+  
   def index
 	  @activities = Activity.all
   end
@@ -26,7 +26,7 @@ class ActivitiesController < ApplicationController
 
   def new
     @group = Group.find(params[:group_id])
-	  @activity = Activity.new
+	@activity = Activity.new
   end
 
   def create
@@ -82,6 +82,24 @@ class ActivitiesController < ApplicationController
     activity.save
     redirect_to :back
   end
+  
+  def choose_photo
+	FlickRaw.api_key="adee5f2be32399176cae039f2dc0a61e"
+	FlickRaw.shared_secret="a371ebc40a2ebbb9"
+	results = flickr.photos.search(:tags => params[:query], :per_page => '10')
+	photos = []
+	results.each do |p|
+		info = flickr.photos.getInfo(:photo_id => p.id)
+		photos << FlickRaw.url(info)
+	end
+	render 'choose_photo', :locals => { :photos => photos }
+  end
+  
+  def store_photo_url
+	@activity = Activity.find(params[:id])
+	@activity.update_attribute(:image, params[:url])
+	redirect_to @activity
+  end
 
   private
 
@@ -94,6 +112,6 @@ class ActivitiesController < ApplicationController
   end
 
   def activity_params
-    params.require(:activity).permit(:name, :location, :start_date, :description, :image, :group_id, :duration)
+    params.require(:activity).permit(:name, :location, :start_date, :description, :group_id, :duration)
   end
 end

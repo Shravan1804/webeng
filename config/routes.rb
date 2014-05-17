@@ -12,11 +12,14 @@ Rails.application.routes.draw do
 
     resources :activities, only: :new
   end
-
+  
   resources :activities do
     member do
       post 'vote'
       post 'definitive'
+	  get 'search_photo'
+	  post 'choose_photo'
+	  post 'store_photo_url'
     end
   end
 
