@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/tweet' => 'twitter#tweet'
+  match '/tweet' => 'twitter#tweet', via: :all
 
   root :to => 'home#index'
 

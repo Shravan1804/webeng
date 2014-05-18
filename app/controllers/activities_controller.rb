@@ -77,50 +77,42 @@ class ActivitiesController < ApplicationController
   end
 
   def definitive
+    activity = Activity.find(params[:id])
+    activity.definitive = true
+    activity.save
 
     oauth_confirm_url = "http://127.0.0.1:3000/tweet"
 
-    @client = TwitterOAuth::Client.new(
-      :consumer_key => '6k9kVE0xZHccPOK5IG8Ah9pgN',
-      :consumer_secret => 'sXd7Fgogxet3D1UQYSdkoB5Ncj3I4B7Im31wNSU66JTCCU2ALK'
+    client = TwitterOAuth::Client.new(
+      :consumer_key => 'CIQ2fv3akOOp9l68NjQWNR6TS',
+      :consumer_secret => 'kzVMmg1B92hMQWTAmx2iA89KZ9qKLgDwoaxhIRVBY8rxI7v8Rp'
     )
 
-    @request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
+    request_token = client.request_token(:oauth_callback => oauth_confirm_url)
 
-    session[:token] = @request_token.token
-    session[:secret] = @request_token.secret
+    session[:twitter_token] = request_token.token
+    session[:twitter_secret] = request_token.secret
+    session[:activity_id] = activity.id
 
-    redirect_to @request_token.authorize_url
-
-    #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow
-    #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
-    #request_token.authorize_url
-    # => http://twitter.com/oauth/authorize?oauth_token=TOKEN
-
-    # render json: request_token
-
-    # activity = Activity.find(params[:id])
-    # activity.definitive = true
-    # activity.save
-    # redirect_to :back
+    redirect_to request_token.authorize_url
   end
   
   def choose_photo
-	FlickRaw.api_key="adee5f2be32399176cae039f2dc0a61e"
-	FlickRaw.shared_secret="a371ebc40a2ebbb9"
-	results = flickr.photos.search(:tags => params[:query], :per_page => '10')
-	photos = []
-	results.each do |p|
-		info = flickr.photos.getInfo(:photo_id => p.id)
-		photos << FlickRaw.url(info)
-	end
-	render 'choose_photo', :locals => { :photos => photos }
+    FlickRaw.api_key="adee5f2be32399176cae039f2dc0a61e"
+    FlickRaw.shared_secret="a371ebc40a2ebbb9"
+    results = flickr.photos.search(:tags => params[:query], :per_page => '10')
+    photos = []
+    results.each do |p|
+      info = flickr.photos.getInfo(:photo_id => p.id)
+      photos << FlickRaw.url(info)
+    end
+    render 'choose_photo', :locals => { :photos => photos }
   end
   
   def store_photo_url
-	@activity = Activity.find(params[:id])
-	@activity.update_attribute(:image, params[:url])
-	redirect_to @activity
+    @activity = Activity.find(params[:id])
+    @activity.update_attribute(:image, params[:url])
+    redirect_to @activity
   end
 
   private
