@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  resources :users
+  resources :users, only: :show
 
   resources :groups do
     member do
@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       post 'definitive'
     end
   end
+
+  get '/tweet' => 'twitter#tweet'
 
   root :to => 'home#index'
 

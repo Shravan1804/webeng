@@ -72,10 +72,32 @@ class ActivitiesController < ApplicationController
   end
 
   def definitive
-    activity = Activity.find(params[:id])
-    activity.definitive = true
-    activity.save
-    redirect_to :back
+
+    oauth_confirm_url = "http://127.0.0.1:3000/tweet"
+
+    @client = TwitterOAuth::Client.new(
+      :consumer_key => '6k9kVE0xZHccPOK5IG8Ah9pgN',
+      :consumer_secret => 'sXd7Fgogxet3D1UQYSdkoB5Ncj3I4B7Im31wNSU66JTCCU2ALK'
+    )
+
+    @request_token = @client.request_token(:oauth_callback => oauth_confirm_url)
+
+    session[:token] = @request_token.token
+    session[:secret] = @request_token.secret
+
+    redirect_to @request_token.authorize_url
+
+    #:oauth_callback required for web apps, since oauth gem by default force PIN-based flow
+    #( see http://groups.google.com/group/twitter-development-talk/browse_thread/thread/472500cfe9e7cdb9/848f834227d3e64d )
+    #request_token.authorize_url
+    # => http://twitter.com/oauth/authorize?oauth_token=TOKEN
+
+    # render json: request_token
+
+    # activity = Activity.find(params[:id])
+    # activity.definitive = true
+    # activity.save
+    # redirect_to :back
   end
 
   private
