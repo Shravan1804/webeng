@@ -1,0 +1,13 @@
+
+
+<h1>Find a photo in Flickr</h1>
+
+<%= form_tag(choose_photo_activity_path, method: "post") do %>
+  <%= label_tag(:query, "Search for:") %>
+  <%= text_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
+<br/>
+
+<%= link_to 'Back', :back %>
