@@ -7,5 +7,5 @@ class Activity < ActiveRecord::Base
   validates :description, presence: true, length: { in: 6..1000 }
 
   belongs_to :group
-  has_and_belongs_to_many :voters, class_name: 'User', join_table: :votes
+  has_and_belongs_to_many :voters, class_name: 'User', join_table: :votes, :dependent => :destroy
 end
