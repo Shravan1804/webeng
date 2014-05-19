@@ -68,7 +68,8 @@
           <th>Delete</th>
         <% end %>
       </tr>
-      <% @group.activity.each do |activity| %>
+      <% activities = @group.activity %>
+      <% activities.each do |activity| %>
         <tr>
             <td><strong><%= link_to activity.name, activity_path(activity) %></strong></td>
             <td><%= activity.start_date.to_formatted_s(:short) %></td>

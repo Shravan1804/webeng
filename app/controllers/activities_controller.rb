@@ -67,7 +67,9 @@ class ActivitiesController < ApplicationController
   def vote
     activity = Activity.find(params[:id])
     unless activity.voters.include?(current_user) then
-      activity.voters << current_user
+      if activity.group.user.include?(current_user)
+        activity.voters << current_user
+      end
     end
     redirect_to :back
   end
