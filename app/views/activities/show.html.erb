@@ -26,11 +26,13 @@
       <td><%= @activity.location %></td>
       <td>
 		<%= @activity.voters.count %>
-		<% if has_voted %>
-			<i class="fa fa-fw fa-thumbs-o-up" style="color: grey;"></i>
-        <% else %>
-			<%= link_to '<i fa fa-fw fa-thumbs-o-up"></i> +1'.html_safe, vote_activity_path(@activity), method: :post %>
-		<% end %>
+    <% if @activity.group.user.include?(current_user) %>
+      <% if has_voted %>
+        <i class="fa fa-fw fa-thumbs-o-up" style="color: grey;"></i>
+          <% else %>
+        <%= link_to '<i fa fa-fw fa-thumbs-o-up"></i> +1'.html_safe, vote_activity_path(@activity), method: :post %>
+      <% end %>
+    <% end %>
 	  </td>
       <td>
         <%= @activity.definitive ? 'Yes' : 'No'%>

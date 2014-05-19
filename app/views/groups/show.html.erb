@@ -68,7 +68,7 @@
           <th>Delete</th>
         <% end %>
       </tr>
-      <% activities = @group.activity %>e
+      <% activities = @group.activity %>
       <% activities.each do |activity| %>
         <tr>
             <td><strong><%= link_to activity.name, activity_path(activity) %></strong></td>
@@ -76,11 +76,13 @@
             <td><%= activity.location %></td>
             <td>
               <%= activity.voters.count.to_s %>
-              <% if activity.voters.include? current_user %>
-                <i class="fa fa-fw fa-thumbs-o-up" style="color: grey;"></i>
-              <% else %>
-                <%= link_to '<i class="fa fa-fw fa-thumbs-o-up"></i> +1'.html_safe, vote_activity_path(activity), method: :post %>
-              <% end %>
+              <% if @group.user.include?(current_user) %>
+                <% if activity.voters.include? current_user %>
+                  <i class="fa fa-fw fa-thumbs-o-up" style="color: grey;"></i>
+                <% else %>
+                  <%= link_to '<i class="fa fa-fw fa-thumbs-o-up"></i> +1'.html_safe, vote_activity_path(activity), method: :post %>
+                <% end %>
+               <% end %>
             </td>
             <td>
               <%= activity.definitive ? 'Yes' : 'No'%>
