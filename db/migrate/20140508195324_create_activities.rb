@@ -5,7 +5,7 @@ class CreateActivities < ActiveRecord::Migration
       t.string :location
       t.datetime :start_date
       t.integer :duration
-      t.string :description
+      t.text :description
       t.string :image
       t.integer :group_id
 

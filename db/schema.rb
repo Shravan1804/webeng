@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20140519174317) do
-=======
-ActiveRecord::Schema.define(version: 20140519153513) do
->>>>>>> 7d2a0ef7ee9185421fe877bd95c72601ac1d85ef
+ActiveRecord::Schema.define(version: 20140517164929) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
@@ -23,11 +19,7 @@ ActiveRecord::Schema.define(version: 20140519153513) do
     t.datetime "start_date"
     t.integer  "duration"
     t.text     "description"
-<<<<<<< HEAD
-    t.string   "image"
-=======
     t.string   "image",       default: "http://placehold.it/150x150"
->>>>>>> 7d2a0ef7ee9185421fe877bd95c72601ac1d85ef
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
