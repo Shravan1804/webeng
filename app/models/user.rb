@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # Devise takes care of validation rules (can be found in config)
   # Devise also stores the controller.
 
-  has_many :owned_groups, class_name: 'Group', foreign_key: :owner_id
-  has_and_belongs_to_many :group
-  has_and_belongs_to_many :voted_for, class_name: 'Activity', join_table: :votes
+  has_many :owned_groups, class_name: 'Group', foreign_key: :owner_id, :dependent => :destroy
+  has_and_belongs_to_many :group, :dependent => :destroy
+  has_and_belongs_to_many :voted_for, class_name: 'Activity', join_table: :votes, :dependent => :destroy
 end
