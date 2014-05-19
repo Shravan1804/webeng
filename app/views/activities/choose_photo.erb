@@ -4,7 +4,7 @@
 <%= form_tag(store_photo_url_activity_path, method: "post") do %>
 <center>
 <table>
-	<%= photos.each do |p| %>
+	<% photos.each do |p| %>
 		<tr>
 			<td><%= radio_button_tag(:url, p) %></td>
 			<td><%= label_tag(:url, image_tag(p)) %></td>
