@@ -68,7 +68,7 @@
           <th>Delete</th>
         <% end %>
       </tr>
-      <% activities = @group.activity %>
+      <% activities = @group.activity.sort_by { |act| act.voters.count }.reverse %>
       <% activities.each do |activity| %>
         <tr>
             <td><strong><%= link_to activity.name, activity_path(activity) %></strong></td>
