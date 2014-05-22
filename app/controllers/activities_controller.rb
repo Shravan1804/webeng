@@ -7,7 +7,7 @@ class ActivitiesController < ApplicationController
   helper_method :get_group_name
   helper_method :has_voted
 
-  before_filter :require_owner, only: [:destroy, :mark_as_definitive]
+  before_filter :require_owner, only: [:new, :edit, :destroy, :mark_as_definitive]
   
   def index
 	  @activities = Activity.all
@@ -25,8 +25,9 @@ class ActivitiesController < ApplicationController
   end
 
   def new
+
     @group = Group.find(params[:group_id])
-	@activity = Activity.new
+	  @activity = Activity.new
   end
 
   def create
@@ -83,7 +84,7 @@ class ActivitiesController < ApplicationController
     activity.definitive = true
     activity.save
 
-    oauth_confirm_url = "http://127.0.0.1:3000/tweet"
+    oauth_confirm_url = 'http://127.0.0.1:3000/tweet'
 
     client = TwitterOAuth::Client.new(
       :consumer_key => 'CIQ2fv3akOOp9l68NjQWNR6TS',
@@ -120,10 +121,14 @@ class ActivitiesController < ApplicationController
   private
 
   def require_owner
-    @group = Activity.find(params[:id]).group
+    if params.has_key?(:id)
+      @group = Activity.find(params[:id]).group
+    elsif params.has_key?(:group_id)
+       @group = Group.find(params[:group_id])
+    end
+
     if current_user.id != @group.owner_id
-      flash[:error] = "You do not have permission to perform this action"
-      redirect_to @group
+      redirect_to @group, alert: "You do not have permission to perform this action"
     end
   end
 

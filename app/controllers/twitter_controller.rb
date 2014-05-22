@@ -8,10 +8,6 @@ class TwitterController < ApplicationController
       :consumer_secret => 'kzVMmg1B92hMQWTAmx2iA89KZ9qKLgDwoaxhIRVBY8rxI7v8Rp'
     )
 
-    # render json: [client, params[:oauth_verifier]]
-
-    #render json: [session[:twitter_token], session[:twitter_secret]]
-
     access_token = client.authorize(
       session[:twitter_token],
       session[:twitter_secret],

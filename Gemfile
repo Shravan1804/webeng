@@ -17,7 +17,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'devise'
 gem 'twitter_oauth'
 #gem 'omniauth'
-#gem 'omniauth-twitter''
+#gem 'omniauth-twitter'
 
 
 # Use jquery as the JavaScript library
